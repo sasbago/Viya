@@ -1,3 +1,0 @@
-#cloud-config
-runcmd:
-  - export PATH=$PATH:/opt >> ~/.bash_profile
