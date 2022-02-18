@@ -1,0 +1,46 @@
+#cloud-config
+runcmd:
+#install terraform
+- wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+- unzip terraform_1.0.0_linux_amd64.zip
+- echo PATH=$PATH:/viya4/deploy >> ~/.bash_profile
+#configure terraform
+- echo alias t="terraform" >> ~/.bash_profile
+- source ~/.bash_profile
+#install jq
+- wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
+- chmod a+x jq-linux64
+- ln -s jq-linux64 jq
+#install kubectl
+- curl -LO https://dl.k8s.io/release/v1.19.9/bin/linux/amd64/kubectl
+- chmod a+x kubectl
+#configure kubectl
+- echo alias k="kubectl" >> ~/.bash_profile
+- source ~/.bash_profile
+#install kustomize 
+- wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.7.0/kustomize_v3.7.0_linux_amd64.tar.gz
+- tar xzf kustomize_v3.7.0_linux_amd64.tar.gz
+#configure kustomize
+- echo alias ku="kustomize" >> ~/.bash_profile
+- source ~/.bash_profile
+#install Azure CLI
+- sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+- echo -e "[azure-cli]
+- name=Azure CLI
+- baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+- enabled=1
+- gpgcheck=1
+- gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/azure-cli.repo
+- sudo dnf install azure-cli
+#install docker
+- sudo yum install -y yum-utils
+- sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+- sudo yum install docker-ce docker-ce-cli containerd.io
+#install git
+- sudo yum install git
+#install helm
+- wget https://get.helm.sh/helm-v3.7.0-linux-amd64.tar.gz
+- tar xvzf helm-v3.7.0-linux-amd64.tar.gz
+- ln -s linux-amd64/helm helm
+# Add Ngninx repository
+- helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
