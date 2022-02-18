@@ -10,14 +10,27 @@ write_files:
     gpgkey=https://packages.microsoft.com/keys/microsoft.asc
   path: /etc/yum.repos.d/azure-cli.repo
   permissions: '0644'
+- content: |
+    # .bash_profile
+
+    # Get the aliases and functions
+    if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+    fi
+
+    # User specific environment and startup programs
+    export PATH=$PATH:/opt
+    alias t="terraform"
+    alias k="kubectl"
+    alias ku="kustomize"
+  path: /home/azureuser/.bash_profile
+  permissions: '0644'
+  owner: azureuser:azureuser
 runcmd:
-  #Set PATH
-  - echo export PATH=$PATH:/opt >> ~/.bash_profile
   #Install Terraform
   - cd /opt
   - sudo wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
   - sudo unzip terraform_1.0.0_linux_amd64.zip
-  - echo alias t="terraform" >> ~/.bash_profile
   #Install JQ
   - sudo wget https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64
   - sudo chmod a+x jq-linux64
@@ -25,11 +38,9 @@ runcmd:
   #Install Kubectl
   - sudo curl -LO https://dl.k8s.io/release/v1.19.9/bin/linux/amd64/kubectl
   - sudo chmod a+x kubectl
-  - echo alias k="kubectl" >> ~/.bash_profile
   #Install Kustomize
   - sudo wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.7.0/kustomize_v3.7.0_linux_amd64.tar.gz
   - sudo tar xzf kustomize_v3.7.0_linux_amd64.tar.gz
-  - sudo echo alias ku="kustomize" >> ~/.bash_profile
   #Install Azure CLI
   - sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
   - sudo dnf install azure-cli
@@ -45,5 +56,3 @@ runcmd:
   - sudo ln -s linux-amd64/helm helm
   #Add Ngninx repository
   - sudo helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-  #Source
-  - source ~/.bash_profile
