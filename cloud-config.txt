@@ -1,0 +1,4 @@
+#cloud-config
+runcmd:
+  - sudo mkdir /opt/test
+  - export PATH=$PATH:/opt >> ~/.bash_profile
