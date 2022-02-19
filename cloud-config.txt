@@ -27,8 +27,13 @@ write_files:
   permissions: '0644'
   owner: azureuser:azureuser
 - content: |
-    # 
+    # Azure
   path: /home/azureuser/.azure
+  permissions: '0644'
+  owner: azureuser:azureuser
+- content: |
+    # Config
+  path: /home/azureuser/.config
   permissions: '0644'
   owner: azureuser:azureuser
 runcmd:
@@ -62,4 +67,4 @@ runcmd:
   - sudo tar xvzf helm-v3.7.0-linux-amd64.tar.gz
   - sudo ln -s linux-amd64/helm helm
   #Add Ngninx repository
-  - sudo helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+  - helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
