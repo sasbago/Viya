@@ -26,7 +26,14 @@ write_files:
   path: /home/azureuser/.bash_profile
   permissions: '0644'
   owner: azureuser:azureuser
+- content: |
+    # 
+  path: /home/azureuser/.azure
+  permissions: '0644'
+  owner: azureuser:azureuser
 runcmd:
+  #Update mirror information
+  - sudo sed -i 's|mirror.centos.org|vault.centos.org|g' /etc/yum.repos.d/CentOS-*
   #Install Terraform
   - cd /opt
   - sudo wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
@@ -43,13 +50,13 @@ runcmd:
   - sudo tar xzf kustomize_v3.7.0_linux_amd64.tar.gz
   #Install Azure CLI
   - sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
-  - sudo dnf install azure-cli
+  - sudo dnf install azure-cli -y
   #Install Docker Community Edition
   - sudo yum install -y yum-utils
   - sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  - sudo yum install docker-ce docker-ce-cli containerd.io
+  - sudo yum -y install docker-ce docker-ce-cli containerd.io
   #Install Git
-  - sudo yum install git
+  - sudo yum -y install git
   #Install Helm
   - sudo wget https://get.helm.sh/helm-v3.7.0-linux-amd64.tar.gz
   - sudo tar xvzf helm-v3.7.0-linux-amd64.tar.gz
