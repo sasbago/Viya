@@ -26,15 +26,10 @@ write_files:
   path: /home/azureuser/.bash_profile
   permissions: '0644'
   owner: azureuser:azureuser
-- content: |
-    # Readme.txt
-  path: /viya4/deploy/Viya4-IaC.txt
-  permissions: '0664'
-  owner: azureuser:azureuser  
 runcmd:
-  #Create file in home dir azureuser
-  - sudo touch /home/azureuser/.config
-  - sudo touch /home/azureuser/.azure
+  #Change owner and group for /home/azureuser
+  - sudo chgrp -R azureuser /home/azureuser
+  - sudo chown -R azureuser /home/azureuser
   #Update mirror information
   - sudo sed -i 's|mirror.centos.org|vault.centos.org|g' /etc/yum.repos.d/CentOS-*
   #Install Terraform
@@ -67,5 +62,9 @@ runcmd:
   #Add Ngninx repository
   - helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   #Clone Viya4-IaC
-  - cd /viya4/deploy
-  - sudo git clone https://github.com/sassoftware/viya4-iac-azure
+  - cd / && sudo mkdir viya4
+  - sudo chown azureuser viya4
+  - sudo chgrp azureuser viya4
+  - cd viya4 && mkdir deploy 
+  - cd deploy
+  - git clone https://github.com/sassoftware/viya4-iac-azure
