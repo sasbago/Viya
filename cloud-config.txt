@@ -41,7 +41,7 @@ runcmd:
   - sudo chmod a+x jq-linux64
   - sudo ln -s jq-linux64 jq
   #Install Kubectl
-  - sudo curl -LO https://dl.k8s.io/release/v1.19.9/bin/linux/amd64/kubectl
+  - sudo curl -LO https://dl.k8s.io/release/v1.20.15/bin/linux/amd64/kubectl
   - sudo chmod a+x kubectl
   #Install Kustomize
   - sudo wget https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv3.7.0/kustomize_v3.7.0_linux_amd64.tar.gz
